@@ -1,0 +1,332 @@
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #5093B3;
+    opacity: 1; /* Firefox */
+    font-size: 12px;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #5093B3;
+    font-size: 12px;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #5093B3;
+    font-size: 12px;
+}
+
+body, html, input {
+    font-family: "Source Code Pro", Roboto, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+input {
+    width: 100%;
+    height: 42px;
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    border-bottom: 2px solid #F8D49A;
+    box-shadow: 4px 4px 8px rgba(248, 212, 154, 0.35);
+    padding-left: 32px;
+    padding-top: 2px;
+}
+input:focus{
+    outline-width: 0;
+    border: 2px solid #5093B3 !important;
+}
+
+.App {
+    text-align: center;
+}
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+.App-link {
+    color: #61dafb;
+}
+
+
+/*Generic*/
+.form-title {
+    text-align: left;
+    margin: 80px 0 32px 32px;
+    color: #5093B3;
+}
+.form-container {
+    position: relative;
+    margin: 0 32px;
+}
+.form-control {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 24px;
+}
+.form-control > .user-icon {
+    position: absolute;
+    top: 12px;
+    left: 8px;
+}
+.form-control > .mail-icon {
+    position: absolute;
+    top: 16px;
+    left: 8px;
+}
+.form-control > .pass-icon {
+    position: absolute;
+    top: 16px;
+    left: 12px;
+}
+.back-icon {
+    text-align: left;
+    padding-top: 24px;
+    padding-left: 32px;
+}
+.back-icon span {
+    margin-left: 4px;
+    color: #5093B3;
+}
+
+/*Container*/
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    background-color: #FAF0DE;
+}
+
+/*Header*/
+.header-container {
+    width: 100%;
+    padding-top: 8px;
+    height: 56px;
+    background-color: #5093b3;
+}
+.header-container .title {
+    font-size: 32px;
+    color: white;
+}
+
+/*Text Divider*/
+.line-divider {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.line-divider > span {
+    position: relative;
+    display: inline-block;
+}
+.line-divider > span:before,
+.line-divider > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: white;
+}
+.line-divider > span:before {
+    right: 100%;
+    margin-right: 15px;
+}
+.line-divider > span:after {
+    left: 100%;
+    margin-left: 15px;
+}
+.line-divider > .line-divider-text {
+    font-size: 10px;
+    color: white;
+}
+
+/*Buttons*/
+.button-primary {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #5093B3;
+    border-radius: 8px;
+    color: white;
+    background-color: #5093B3;
+}
+.button-secondary {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #64C4C3;
+    border-radius: 8px;
+    color: white;
+    background-color: #64C4C3;
+}
+
+/*Bottom*/
+.bottom-container {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    padding-top: 8px;
+    background-color: #5093b3;
+    bottom: 0;
+}
+.bottom-container .home,
+.bottom-container .dashboard {
+    margin-right: 64px;
+}
+.bottom-container .account {}
+
+/*Login*/
+.background-login {
+    background-image: url("./assets/images/login-bg.png");
+    background-repeat: no-repeat;
+    background-size:100% 100%;
+    background-position:center;
+    height: 100vh;
+}
+.background-login > .form-container {
+    top: 45%;
+}
+.background-login > .form-container > .login-button {
+    width: 100%;
+    height: 32px;
+    border: 1px solid #5093B3;
+    border-radius: 8px;
+    color: white;
+    background-color: #5093B3;
+}
+
+/*Register*/
+.background-register {
+    background-color: #FAF0DE;
+    height: 100vh;
+}
+
+/*Home & Dashboard*/
+.tasks-container {
+    padding-left: 32px;
+    padding-right: 32px;
+}
+.tasks-container > .add-task {
+    text-align: left;
+    padding-top: 24px;
+    margin-bottom: 48px;
+    color: #5093B3;
+}
+.tasks-container > .add-task > .add-task-text {
+    display: flex;
+    padding-left: 40px;
+    font-size: 24px;
+    margin-top: -30px;
+}
+.tasks-container > .line-divider > span:before,
+.tasks-container > .line-divider > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 3px;
+    background: #5093B3;
+}
+.tasks-container > .line-divider > .line-divider-text {
+    font-size: 24px;
+    color: #5093B3;
+}
+.tasks-container > .tasks-list-container {
+    text-align: left;
+}
+.tasks-container > .tasks-list-container .remove-tasks {
+    margin-bottom: 40px;
+}
+.tasks-container > .tasks-list-container .remove-tasks-text {
+    display: flex;
+    padding-left: 32px;
+    font-size: 16px;
+    margin-top: -26px;
+    color: #FD5050;
+}
+.tasks-container > .tasks-list-container .tasks-list-scroller {
+    overflow: scroll;
+}
+.task-list {
+    height: 32px;
+    border-bottom: 2px solid #5093B3;
+    margin-top: 16px;
+    padding-right: 8px;
+}
+.task-list div > span:first-child {
+    display: flex;
+    padding-left: 32px;
+    font-size: 24px;
+    margin-top: -30px;
+}
+.task-list div > span:nth-child(2) {
+    display: flex;
+    padding-left: 96px;
+    font-size: 14px;
+    margin-top: -24px;
+}
+.task-list .task-schedule {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: #5093B3;
+}
+.task-list .task-title {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 18px;
+    color: #5093B3;
+}
+
+/*Account*/
+.account-password-link {
+    margin-top: 40px;
+    color: #5093B3;
+}
+.account-password-logout {
+    color: rgba(255, 0, 0, 0.65);
+}
+.account-password-link,
+.account-password-logout {
+    text-align: left;
+    margin-left: 24px;
+    padding: 8px;
+    width: 50%;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
