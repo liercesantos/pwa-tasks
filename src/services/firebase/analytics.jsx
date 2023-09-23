@@ -1,10 +1,9 @@
-import firebase from "./index";
+import {logEvent} from "firebase/analytics";
+import {firebase_analytics} from "./index";
 
-firebase.analytics();
+const firebaseAnalytics = (event, params) => {
 
-const analytics = (event, params) => {
-    //...lógica
-    return firebase.analytics().logEvent(event, params);
+    return logEvent(firebase_analytics, event, params);
 }
 
-export default analytics;
+export default firebaseAnalytics;

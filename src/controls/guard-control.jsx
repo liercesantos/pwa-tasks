@@ -1,7 +1,7 @@
-import {fetchUser, createUser, updateUser} from "../repositories/auth";
+import {fetchUser, createUser} from "../repositories/auth";
 import {useGuard} from "../contexts/GuardContext";
 import {toast} from "react-toastify";
-import analytics from "../services/firebase/analytics";
+import firebaseAnalytics from "../services/firebase/analytics";
 
 
 class GuardControl {
@@ -14,7 +14,7 @@ class GuardControl {
             setUser({response, key: APPLICATION_KEY});
             setLogged(true);
             localStorage.setItem('@user', JSON.stringify(response));
-            analytics('new_user_registered', [{name: response.name, email: response.email}]);
+            firebaseAnalytics('new_user_registered', [{name: response.name, email: response.email}]);
             window.location = '/';
         }).catch(err => {
             console.warn("ERROR", err)
@@ -35,7 +35,7 @@ class GuardControl {
                 setUser({response, key: APPLICATION_KEY});
                 setLogged(true);
                 localStorage.setItem('@user', JSON.stringify(response));
-                analytics('login_attempt', [{name: response.name, email: response.email}]);
+                firebaseAnalytics('login_attempt', [{name: response.name, email: response.email}]);
             })
             .catch(err => {
                 if(err === 'UserNotFound'){
@@ -76,7 +76,7 @@ class GuardControl {
         setUser({});
         setLogged(false);
         localStorage.setItem('@user', "");
-        analytics('logout', [{name: user.name, email: user.email}]);
+        firebaseAnalytics('logout', [{name: user.name, email: user.email}]);
         window.location.href = "/";
     }
 }

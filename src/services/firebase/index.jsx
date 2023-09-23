@@ -1,5 +1,6 @@
-import firebase from "firebase";
-import 'firebase/analytics';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getAnalytics } from 'firebase/analytics';
 import _private from "../private.json";
 
 const config = {
@@ -11,7 +12,8 @@ const config = {
     appId: _private.appId,
     measurementId: _private.measurementId
 };
+const firebase = initializeApp(config);
+const firebase_auth = getAuth(firebase);
+const firebase_analytics = getAnalytics(firebase);
 
-firebase.initializeApp(config);
-
-export default firebase;
+export {firebase, firebase_auth, firebase_analytics};

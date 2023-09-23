@@ -36,7 +36,6 @@ const createUser = async ({name, email, password}) => {
                 }, {});
             }
 
-
             if(!exists || Object.values(exists || {}).every((value) => !value)){
                 const id = (users && users.length > 0) ? users[users.length - 1]['id'] + 1: 1;
                 const user = {
