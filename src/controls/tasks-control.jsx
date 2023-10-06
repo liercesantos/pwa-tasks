@@ -3,6 +3,7 @@ import {useTasks} from "../contexts/TasksContext";
 import {reorder} from "../utils/tasks.tools";
 import {toast} from "react-toastify";
 import analytics from "../services/firebase/analytics";
+import {uuidv4} from "../utils/generals.tools";
 
 class TasksControl {
     context = useTasks();
@@ -12,7 +13,8 @@ class TasksControl {
 
         const ordered = reorder(tasks, "id");
         const id = (tasks.length === 0) ? 1 : ordered[ordered.length - 1]['id'] + 1;
-        const task = {...data, id: id};
+        const uid = uuidv4();
+        const task = {...data, id: id, uid: uid, delete: false};
 
         tasks.push(task);
         saveTasks(tasks).then(() => {
@@ -33,9 +35,14 @@ class TasksControl {
     }
 
     handleCheck(task, index) {
-        const {tasks} = this.context;
+        const {tasks, setTasks} = this.context;
         task.checked = !task.checked;
         tasks[index] = task;
+
+        const to_save = this.prepareChecked(task);
+        saveTasks(to_save, false).then(response => {
+            setTasks(tasks);
+        }).catch(err => console.log(err));
     }
 
     handleDone(task, index) {
@@ -43,7 +50,7 @@ class TasksControl {
         task.done = !task.done;
         tasks[index] = task;
         const to_save = this.prepareDone(task);
-        console.log(to_save);
+
         saveTasks(to_save).then(() => {
             this.handleTasks(show_done);
             analytics(task.done ? 'task_done' : 'task_undone', task.title);
@@ -54,7 +61,7 @@ class TasksControl {
     prepareDone(task){
         const storage = JSON.parse(localStorage.getItem('@tasks'));
         return Object.entries(storage).reduce((current, [id, row]) => {
-            if (row.id === task.id) {
+            if (row.uid === task.uid) {
                 row.done = task.done;
             }
             current.push(row);
@@ -62,16 +69,39 @@ class TasksControl {
         }, []);
     }
 
-    handleDelete() {
-        const {tasks, setTasks} = this.context;
-        const undeleted = tasks.filter(task => !task.checked);
-        setTasks(undeleted);
+    prepareChecked(task){
+        const storage = JSON.parse(localStorage.getItem('@tasks'));
+        return Object.entries(storage).reduce((current, [id, row]) => {
+            if (row.uid === task.uid) {
+                row.checked = task.checked;
+            }
+            current.push(row);
+            return current;
+        }, []);
+    }
 
-        saveTasks(undeleted).then(() => {
-            this.handleTasks();
+    handleDelete() {
+        const {setTasks} = this.context;
+        const toDelete = this.prepareDelete();
+
+        saveTasks(toDelete).then(response => {
+            setTasks(response);
+            //this.handleTasks();
             analytics('task_deleted');
             toast.success("Tarefa removida!");
         }).catch(err => console.log(err));
+    }
+
+    prepareDelete(){
+        const storage = JSON.parse(localStorage.getItem('@tasks'));
+
+        return Object.entries(storage).reduce((current, [id, row]) => {
+            if (row.checked) {
+                row.delete = true;
+            }
+            current.push(row);
+            return current;
+        }, []);
     }
 }
 export default TasksControl;

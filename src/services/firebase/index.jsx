@@ -3,6 +3,8 @@ import { getAuth } from "firebase/auth";
 import { getAnalytics } from 'firebase/analytics';
 import _private from "../private.json";
 
+const isOnline = navigator.onLine;
+
 const config = {
     apiKey: _private.apiKey,
     authDomain: _private.authDomain,

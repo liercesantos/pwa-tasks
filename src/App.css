@@ -322,6 +322,28 @@ input:focus{
     line-height: 20px;
 }
 
+.app-loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url("./assets/images/login-bg.png");
+    background-repeat: no-repeat;
+    background-size:100% 100%;
+    background-position:center;
+    height: 100vh;
+}
+
+.app-loader-description {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 32px 16px;
+}
+
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);

@@ -13,6 +13,7 @@ const Home = () => {
     useEffect(() => {
         setShowDone(false);
         control.handleTasks(false);
+      /* eslint-disable-next-line */
     }, []);
 
     const handleModal = () => {

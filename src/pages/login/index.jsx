@@ -5,6 +5,7 @@ import KeyIcon from "../../assets/icons/key";
 import MailIcon from "../../assets/icons/mail";
 import TextDivider from "../../components/layout/text-divider";
 import GuardControl from "../../controls/guard-control";
+import {toast} from "react-toastify";
 
 const Login = () => {
     let navigate = useNavigate();
@@ -15,7 +16,25 @@ const Login = () => {
     });
 
     const handleLogin = () => {
-        control.authenticate(formData);
+        const validate = isValid();
+        if (Object.values(validate || {}).every((value) => !value)) {
+            control.authenticate(formData);
+        }
+        else {
+            toast.warn("Preencha todos os campos corretamente!")
+        }
+    }
+
+    const isValid = () => {
+        return Object.entries(formData).reduce((elem, value) => {
+            let invalid = true;
+
+            if(value[1] && value[1].length > 0){
+                invalid = false;
+            }
+
+            return {...elem, [value[0]]: invalid};
+        }, {});
     }
 
     return (
@@ -33,7 +52,7 @@ const Login = () => {
                     <KeyIcon className={"pass-icon"} />
                 </InputPassword>
 
-                <ButtonPrimary onPress={() => { handleLogin(); }}>
+                <ButtonPrimary onPress={handleLogin}>
                     Entrar
                 </ButtonPrimary>
 

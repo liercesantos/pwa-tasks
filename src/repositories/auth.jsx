@@ -1,65 +1,122 @@
-const fetchUser = async (data) => {
-    const {email, password} = data;
-    return new Promise((resolve, reject) => {
-        try {
-            const users = JSON.parse(localStorage.getItem('@users'));
+import {firebase_auth} from "../services/firebase";
+import {
+  indexedDBLocalPersistence,
+  createUserWithEmailAndPassword,
+  reload,
+  setPersistence,
+  signInWithEmailAndPassword,
+  signOut,
+  updatePassword,
+  updateProfile,
+} from "firebase/auth";
 
-            const user = Object.entries(users).reduce((elem, [id, row]) => {
-                if(row.email === email && row.password === password){
-                    elem = row;
-                }
+let isOnline = true;
+if('serviceWorker' in navigator){
+  isOnline = navigator.onLine;
 
-                return elem;
-            }, {});
+  console.log(`You're in ${isOnline ? "online" : "offline"} mode...`);
+}
 
-            if(user?.id){
-                resolve(user);
+const signInUser = async (data) => {
+  const {email, password} = data;
+
+  if(!isOnline){
+    return Promise.reject(`You're in ${isOnline ? "online" : "offline"} mode...`)
+  }
+
+  return new Promise((resolve, reject) => {
+    try {
+      setPersistence(firebase_auth, indexedDBLocalPersistence).then(_ => {
+        signInWithEmailAndPassword(firebase_auth, email, password)
+          .then(response => {
+
+            const user = response.user;
+            resolve({
+              uid: user.uid,
+              name: user.displayName,
+              email: user.email
+            });
+          })
+          .catch(e => {
+            if(e.code === "auth/invalid-login-credentials"){
+              reject('UserNotFound');
             }
-            reject('UserNotFound');
-        }
-        catch (e) {
-            console.log(e);
-            reject(e);
-        }
-    });
+            reject('UnknownError');
+          });
+      });
+    }
+    catch (e) {
+      reject(e);
+    }
+  });
 }
 
 const createUser = async ({name, email, password}) => {
-    return new Promise((resolve, reject) => {
-        try {
-            let users = JSON.parse(localStorage.getItem('@users'));
-            let exists = false;
-            if(users && Object.entries(users).length > 0){
-                exists = Object.entries(users).reduce((elem, value) => {
-                    const exist = (value[1].email === email);
-                    return {...elem, [value[0]]: exist};
-                }, {});
+  if(!isOnline){
+    return Promise.reject("You're in offline mode...")
+  }
+
+  return new Promise((resolve, reject) => {
+    try {
+      setPersistence(firebase_auth, indexedDBLocalPersistence).then(_ => {
+        createUserWithEmailAndPassword(firebase_auth, email, password)
+          .then(_ => {
+            updateProfile(firebase_auth.currentUser, {displayName: name});
+            reload(firebase_auth.currentUser).then(_ => {
+              const user = firebase_auth.currentUser;
+
+              resolve({
+                uid: user.uid,
+                name: user.displayName,
+                email: user.email
+              });
+            });
+
+          })
+          .catch(error => {
+            switch (error.code) {
+              case 'auth/email-already-in-use': {
+                reject('UserExists');
+                break;
+              }
+              case 'auth/invalid-email': {
+                reject('InvalidEmail');
+                break;
+              }
+              case 'auth/weak-password': {
+                reject('WeakPassword');
+                break;
+              }
+              case 'auth/operation-not-allowed':
+              default: {
+                reject('UnknownError');
+                break;
+              }
             }
-
-            if(!exists || Object.values(exists || {}).every((value) => !value)){
-                const id = (users && users.length > 0) ? users[users.length - 1]['id'] + 1: 1;
-                const user = {
-                    id: id,
-                    name: name,
-                    email: email,
-                    password: password
-                };
-
-                (users) ? users.push(user) : users = [user];
-                localStorage.setItem('@users', JSON.stringify(users));
-                resolve(user);
-            }
-
-            reject('UserExists');
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+            reject(error)
+          });
+      });
+    }
+    catch (e) {
+      reject(e);
+    }
+  });
 }
 
-const updateUser = async ({name, email, password}) => {
+const updateUserPassword = async (password) => {
+  if(!isOnline){
+    return Promise.reject("You're in offline mode...")
+  }
 
+  return updatePassword(firebase_auth.currentUser, password);
 }
 
-export {fetchUser, createUser, updateUser};
+const signOutUser = async () => {
+  if(!isOnline){
+    return Promise.reject("You're in offline mode...")
+  }
+
+  return signOut(firebase_auth);
+}
+
+export {createUser, signInUser, signOutUser, updateUserPassword};

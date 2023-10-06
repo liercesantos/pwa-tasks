@@ -9,6 +9,7 @@ const Dashboard = () => {
     useEffect(() => {
         setShowDone(true);
         control.handleTasks(true);
+        /* eslint-disable-next-line */
     }, []);
 
     return(

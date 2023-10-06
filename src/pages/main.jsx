@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {BrowserRouter, useLocation} from "react-router-dom";
 import {
   Routes,
@@ -13,6 +13,7 @@ import GuardControl from "../controls/guard-control";
 import Dashboard from "./dashboard";
 import Account from "./account";
 import firebaseAnalytics from "../services/firebase/analytics";
+import AppLoader from "../components/layout/AppLoader";
 
 const GuestRoutes = () => {
   return(
@@ -72,24 +73,38 @@ const AnalyticsListener = () => {
       firebase_screen: classMaps[location.pathname],
       firebase_screen_class: classMaps[location.pathname]
     });
+    /* eslint-disable-next-line */
   }, [location]);
 }
 
 const Main = () => {
   const {logged} = useGuard();
-  const login_control = new GuardControl();
+  const guardControl = new GuardControl();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if(!logged){
-      login_control.persist();
+      setLoading(true);
+      setTimeout(() => {
+        guardControl.persist();
+        setLoading(false);
+      }, 3000)
     }
+    /* eslint-disable-next-line */
   }, []);
 
   return (
-    <BrowserRouter>
-      <AnalyticsListener />
-      { !logged ? <GuestRoutes /> : <GuardRoutes /> }
-    </BrowserRouter>
+    <>
+      { loading
+        ?
+          <AppLoader />
+        :
+          <BrowserRouter>
+            <AnalyticsListener />
+            { !logged ? <GuestRoutes /> : <GuardRoutes /> }
+          </BrowserRouter>
+      }
+    </>
   );
 }
 

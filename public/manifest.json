@@ -8,7 +8,7 @@
     "display": "standalone",
     "theme_color": "#5093B3",
     "background_color": "#5093B3",
-    "description": "PWA UX/UI application from Infnet course",
+    "description": "PWA UX/UI application from Infnet",
     "icons": [
         {
             "src": "icon_x48.png",

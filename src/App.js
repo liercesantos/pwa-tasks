@@ -8,14 +8,14 @@ import TasksProvider from "./contexts/TasksContext";
 
 function App() {
 
-    return (
-        <GuardProvider>
-            <TasksProvider>
-                <Main />
-                <ToastContainer theme={"colored"} autoClose={2500} />
-            </TasksProvider>
-        </GuardProvider>
-    );
+  return (
+    <GuardProvider>
+      <TasksProvider>
+        <Main />
+        <ToastContainer theme={"colored"} autoClose={2500} />
+      </TasksProvider>
+    </GuardProvider>
+  );
 }
 
 export default App;
